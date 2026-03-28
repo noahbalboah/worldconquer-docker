@@ -1,0 +1,46 @@
+services:
+  db:
+    container_name: comet-db
+    image: mariadb
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: password
+    network_mode: host
+    volumes:
+      - /home/noah/comet/sql/data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  account:
+    container_name: comet-account
+    build: .
+    entrypoint:
+      - dotnet
+      - Comet.Account.dll
+    working_dir: /app
+    restart: unless-stopped
+    network_mode: host
+    depends_on:
+      db:
+        condition: service_healthy
+
+  game:
+    container_name: comet-game
+    build: .
+    entrypoint:
+      - dotnet
+      - Comet.Game.dll
+    working_dir: /app
+    restart: unless-stopped
+    network_mode: host
+    depends_on:
+      db:
+        condition: service_healthy
+      account:
+        condition: service_started
+    volumes:
+      - /home/noah/conquer-data/5187-client/ini:/app/ini:ro
+      - /home/noah/conquer-data/5187-client/map:/app/map:ro

@@ -1,0 +1,13 @@
+.git
+.vs
+.vscode
+*.swp
+*.*~
+*.suo
+*.user
+tests/
+web/
+img/
+sql/
+SystemLog/
+GameLog/
