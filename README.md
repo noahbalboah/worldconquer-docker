@@ -7,6 +7,16 @@ Docker deployment configuration for the [World Conquer Online (Comet)](https://g
 - **Comet** by [Gareth Jensen "Spirited"](https://gitlab.com/spirited/comet) - Original server emulator
 - **World Conquer (FTW fork)** by [Felipe Vieira Vendramini](https://gitlab.com/felipevendramini/comet) - Extended fork targeting patch 5187
 
+## Improvements Over Upstream
+
+This deployment includes several upgrades over the original Comet project:
+
+- **Upgraded from .NET 5 to .NET 8** - All projects, EF Core (5.0 → 8.0), Pomelo MySQL connector, and Microsoft.Extensions packages
+- **Docker Compose deployment** - One-command setup instead of manual installation of .NET, MariaDB, and manual config editing
+- **MariaDB in Docker** - No need to install and configure MySQL/MariaDB separately
+- **Health checks** - Database container includes health checks so servers don't start before the DB is ready
+- **Auto-restart** - Containers restart automatically if they crash (`restart: unless-stopped`)
+
 ## Prerequisites
 
 - [Docker](https://docs.docker.com/get-docker/) and Docker Compose
